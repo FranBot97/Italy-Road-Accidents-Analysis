@@ -41,3 +41,10 @@ plt.title("Number of accidents per year")
 plt.show()
 
 #plot the number of deaths in accident per year
+percentage = [(data[i]["morti"].sum()/(data[i].shape[0]))*100 for i in range(len(data))]
+#build histogram
+plt.bar(years, percentage)
+plt.xlabel("Year")
+plt.ylabel("Percentage of deaths")
+plt.title("Percentage of deaths per year")
+plt.show()
