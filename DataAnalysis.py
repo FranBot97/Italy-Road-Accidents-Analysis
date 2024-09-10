@@ -1,29 +1,43 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-data2022 = pd.read_csv("Dataset/INCSTRAD_Microdati_2022.csv")
+#UTILITY FUNCTIONS
+
+#remove rows with null values in specific columns
+def remove_rows(data):
+    data = data.dropna(subset=["veicolo__a___et__conducente"])
+    data = data.dropna(subset=["Ora"])
+    data = data.dropna(subset=["giorno"])
+    data = data[data["tipo_veicoli__b_"].notnull()].dropna(subset=["veicolo__b___sesso_conducente"])
+    data = data[data["tipo_veicoli__b_"].notnull()].dropna(subset=["veicolo__b___et__conducente"])
+    return data
+
+#READ DATA
 data2018 = pd.read_csv("Dataset/INCSTRAD_Microdati_2018.csv")
+data2019 = pd.read_csv("Dataset/INCSTRAD_Microdati_2019.csv")
+data2020 = pd.read_csv("Dataset/INCSTRAD_Microdati_2020.csv")
+data2021 = pd.read_csv("Dataset/INCSTRAD_Microdati_2021.csv")
+data2022 = pd.read_csv("Dataset/INCSTRAD_Microdati_2022.csv")
 
-#calcola quanti maschi coinvolti negli incidenti sia su veicolo a che su veicolo b
-maschi2018 = data2018['veicolo__a___sesso_conducente'].value_counts()[1] + data2018['veicolo__b___sesso_conducente'].value_counts()[1]
-femmine2018 = data2018['veicolo__a___sesso_conducente'].value_counts()[2] + data2018['veicolo__b___sesso_conducente'].value_counts()[2]
+#add all data in a single array
+data = [data2018, data2019, data2020, data2021, data2022]
+
+#execute remove_rows function for each dataset
+for i in range(len(data)):
+    data[i] = remove_rows(data[i])
+    print(data[i].shape)
+    #print(data[i].isna().sum())
 
 
-#calcola quanti maschi coinvolti negli incidenti sia su veicolo a che su veicolo b
-maschi2022 = data2022['veicolo__a___sesso_conducente'].value_counts()[1] + data2022['veicolo__b___sesso_conducente'].value_counts()[1]
-femmine2022 = data2022['veicolo__a___sesso_conducente'].value_counts()[2] + data2022['veicolo__b___sesso_conducente'].value_counts()[2]
-
-
-#crea un grafico a barre maschi e femmine sommati divisi per anno
-fig, ax = plt.subplots()
-barWidth = 0.25
-r1 = [1,2]
-r2 = [x + barWidth for x in r1]
-plt.bar(r1, [maschi2018, femmine2018], color='b', width=barWidth, edgecolor='grey', label='2018')
-plt.bar(r2, [maschi2022, femmine2022], color='r', width=barWidth, edgecolor='grey', label='2022')
-plt.xlabel('Sesso')
-plt.xticks([1.5, 2.5], ['Maschi', 'Femmine'])
-plt.ylabel('Numero di persone')
-plt.title('Conducenti che hanno causato l\'incidente divisi per sesso')
-plt.legend()
+#plot the number of accidents per year
+years = [2018, 2019, 2020, 2021, 2022]
+#use data array
+accidents = [data[i].shape[0] for i in range(len(data))]
+#build histogram
+plt.bar(years, accidents)
+plt.xlabel("Year")
+plt.ylabel("Number of accidents")
+plt.title("Number of accidents per year")
 plt.show()
+
+#plot the number of deaths in accident per year
