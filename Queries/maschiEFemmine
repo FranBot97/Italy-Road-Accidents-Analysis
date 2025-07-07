@@ -1,0 +1,13 @@
+
+SELECT COUNT(*) 
+FROM Incidenti
+WHERE SessoConducenteA='M' OR SessoConducenteB='M';
+
+SELECT COUNT(*) 
+FROM Incidenti
+WHERE SessoConducenteA='F' OR SessoConducenteB='F';
+
+
+SELECT COUNT(*) 
+FROM Incidenti
+WHERE SessoConducenteA='F' OR SessoConducenteB='F'
