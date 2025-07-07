@@ -38,7 +38,7 @@ plt.bar(years, accidents)
 plt.xlabel("Year")
 plt.ylabel("Number of accidents")
 plt.title("Number of accidents per year")
-plt.show()
+#plt.show()
 
 #plot the number of deaths in accident per year
 percentage = [(data[i]["morti"].sum()/(data[i].shape[0]))*100 for i in range(len(data))]

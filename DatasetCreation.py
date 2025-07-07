@@ -1,10 +1,12 @@
 import pandas as pd
 
-filename = "Dataset/INCSTRAD_Microdati_2022.txt"
-filename2021 = "Dataset/INCSTRAD_Microdati_2021.txt"
-filename2020 = "Dataset/INCSTRAD_Microdati_2020.txt"
-filename2019 = "Dataset/INCSTRAD_Microdati_2019.txt"
-filename2018 = "Dataset/INCSTRAD_Microdati_2018.txt"
+filename = "Dataset/SourceTxtFiles/INCSTRAD_Microdati_2022.txt"
+filename2021 = "Dataset/SourceTxtFiles/INCSTRAD_Microdati_2021.txt"
+filename2020 = "Dataset/SourceTxtFiles/INCSTRAD_Microdati_2020.txt"
+filename2019 = "Dataset/SourceTxtFiles/INCSTRAD_Microdati_2019.txt"
+filename2018 = "Dataset/SourceTxtFiles/INCSTRAD_Microdati_2018.txt"
+filename2023 = "Dataset/SourceTxtFiles/INCSTRAD_Microdati_2023.txt"
+
 
 def read_file(filename):
     data = pd.read_csv(filename, delimiter="\t", usecols=["anno", 
@@ -13,6 +15,7 @@ def read_file(filename):
                                                           "giorno", 
                                                           "localizzazione_incidente", 
                                                           "condizioni_meteorologiche", 
+                                                          "fondo_stradale",
                                                           "natura_incidente", 
                                                           "tipo_veicolo_a", 
                                                           "veicolo__a___sesso_conducente", 
@@ -53,3 +56,5 @@ data2019.to_csv("Dataset/INCSTRAD_Microdati_2019.csv", index=False)
 data2018 = read_file(filename2018)
 data2018.to_csv("Dataset/INCSTRAD_Microdati_2018.csv", index=False)
 
+data2023 = read_file(filename2023)
+data2023.to_csv("Dataset/INCSTRAD_Microdati_2023.csv", index=False)
