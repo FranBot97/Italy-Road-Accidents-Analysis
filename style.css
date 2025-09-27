@@ -1,0 +1,162 @@
+/* App e sfondo chiari */
+html, body, .stApp, .main {
+    background: #ffffff !important;
+    color: #111 !important;
+}
+
+/* Sidebar chiara */
+[data-testid="stSidebar"] {
+    background: #f7f7fb !important;
+    border-right: 1px solid #e5e7eb;
+}
+
+/* Card metriche */
+.metric-card {
+    background: #ffffff !important;
+    padding: 1.2rem;
+    border-radius: 14px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+    border: 1px solid #eef2f7;
+    margin: 0.6rem 0;
+}
+
+/* Titoli sezione (scuri) */
+.section-header {
+    color: #1f2937;
+    font-size: 2rem;
+    font-weight: 700;
+    text-align: center;
+    margin: 2rem 0 0.6rem;
+    text-shadow: none;
+}
+.section-subtitle {
+    color: #6b7280;
+    font-size: 1.05rem;
+    text-align: center;
+    margin-bottom: 1.4rem;
+    font-style: italic;
+}
+
+/* Controlli */
+.stSelectbox > div > div,
+.stMultiSelect > div > div,
+.stRadio > div,
+.stNumberInput > div > div > input,
+.stSlider > div {
+    background-color: #ffffff !important;
+    border-radius: 10px !important;
+}
+
+/* Testo dei controlli */
+.stSelectbox label,
+.stMultiSelect label,
+.stRadio label,
+.stNumberInput label,
+.stSlider label,
+.stToggle label,
+.stCheckbox label {
+    color: #1f2937 !important;
+    font-weight: 500;
+}
+
+/* Opzioni radio e checkbox */
+.stRadio > div > div > div > label,
+.stCheckbox > div > div > div > label {
+    color: #374151 !important;
+}
+
+/* Testo del toggle */
+.stToggle > div > div > div > label {
+    color: #1f2937 !important;
+}
+
+/* Toggle specifico - selettori più precisi */
+div[data-testid="stToggle"] label,
+div[data-testid="stToggle"] > div > div > div > label,
+.stToggle div label {
+    color: #1f2937 !important;
+}
+
+
+/* Override per elementi specifici che devono rimanere colorati */
+.metric-card h3,
+.section-header,
+.section-subtitle,
+.insight-box h4,
+.insight-box ul,
+.insight-box li {
+    color: inherit !important;
+}
+
+/* Card per analisi temporale */
+.temporal-card {
+    background: #ffffff;
+    padding: 1.5rem;
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    border: 1px solid #e5e7eb;
+    margin: 1rem 0;
+}
+
+.insight-box {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    padding: 1rem;
+    border-radius: 12px;
+    border-left: 4px solid #3b82f6;
+    margin: 1rem 0;
+}
+
+
+/* Sidebar link menu */
+.sidebar-title {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.sidebar-links {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+}
+
+.sidebar-links li {
+    margin: 0.5rem 0;
+}
+
+.sidebar-links a {
+    display: block;
+    padding: 0.6rem 1rem;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #1f2937; /* grigio scuro */
+    background: transparent;
+    transition: all 0.25s ease;
+    border: 1px solid transparent;
+}
+
+.sidebar-links a:hover {
+    background: #f0f9ff;            /* azzurro molto chiaro */
+    border: 1px solid #38bdf8;      /* bordo azzurro */
+    color: #0ea5e9;                 /* testo azzurro */
+    cursor: pointer;
+}
+
+/* Opzionale: stile attivo */
+.sidebar-links a.active {
+    background: #e0f2fe;
+    border: 1px solid #0284c7;
+    color: #0369a1;
+}
+
+/* Nasconde l’icona link accanto ai titoli */
+h1 a.anchor-link, 
+h2 a.anchor-link, 
+h3 a.anchor-link, 
+h4 a.anchor-link, 
+h5 a.anchor-link, 
+h6 a.anchor-link {
+    display: none !important;
+}
+
