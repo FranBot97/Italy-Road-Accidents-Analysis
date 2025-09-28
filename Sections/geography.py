@@ -127,11 +127,20 @@ def show():
     # Aggiungi tile personalizzata minimale - SOLO ITALIA
     folium.TileLayer(
         tiles='https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png',
-        attr='',  # Nessuna attribuzione
+        attr='me',  # Nessuna attribuzione
         name="Minimal",
         overlay=False,
         control=False  # Nasconde controllo layer
     ).add_to(m)
+
+    # ALTERNATIVA ancora più minimale - solo sfondo bianco:
+    # folium.TileLayer(
+    #     tiles='https://tiles.stadiamaps.com/tiles/stamen_toner_background/{z}/{x}/{y}{r}.png',
+    #     attr='&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>',
+    #     name="Minimal White",
+    #     overlay=False,
+    #     control=True
+    # ).add_to(m)
 
     # Crea il choropleth
     choropleth = folium.Choropleth(
