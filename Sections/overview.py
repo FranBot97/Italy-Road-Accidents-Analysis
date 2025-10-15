@@ -3,7 +3,7 @@ import streamlit as st
 import plotly.graph_objects as go
 
 # =========================
-# SEZIONE 1: OVERVIEW ANNUALE
+# SEZIONE 1: OVERVIEW GENERALE
 # =========================
 
 def show():  
@@ -19,7 +19,7 @@ def show():
         'percentuali_morti': 'Percentuale morti'
     })
 
-    # Metriche chiave in cards
+    # Colonne cards 
     col1, col2, col3 = st.columns(3)
 
     with col1:
@@ -52,28 +52,28 @@ def show():
             </div>
         """, unsafe_allow_html=True)
 
-    # Grafico principale con doppio asse Y
+    # Grafico 
     fig_yearly = go.Figure()
 
-    # Linea incidenti (asse Y sinistro)
+    # Numero incidenti (sx)
     fig_yearly.add_trace(go.Scatter(
         x=df_yearly_accidents["Anno"],
         y=df_yearly_accidents["Incidenti"],
-        mode='lines+markers+text',   # aggiungo text
+        mode='lines+markers+text',   
         name="Incidenti",
         line=dict(color='rgba(102, 126, 234, 0.9)', width=4),
         marker=dict(size=10, color='rgba(102, 126, 234, 1)'),
         text=[f"{v:,}".replace(",", ".") for v in df_yearly_accidents["Incidenti"]],
-        textposition="top center",                     # posizione sopra i punti
+        textposition="top center",                  
         textfont=dict(size=14, color="black"),
         hovertemplate="<b>Anno %{x}</b><br>Incidenti: %{y:,}<extra></extra>"
     ))
 
-    # Linea tasso mortalità (asse Y destro)
+    # Tasso mortalità (dx)
     fig_yearly.add_trace(go.Scatter(
         x=df_yearly_accidents["Anno"],
         y=df_yearly_accidents["Percentuale morti"],
-        mode='lines+markers+text',   # aggiungo text
+        mode='lines+markers+text',   
         name="Tasso mortalità (%)",
         line=dict(color='rgba(231, 76, 60, 0.9)', width=4, dash="dash"),
         marker=dict(size=10, color='rgba(231, 76, 60, 1)'),
@@ -93,17 +93,17 @@ def show():
             font=dict(size=18),
           
         ),
-        tickfont=dict(size=14),  # anni più grandi
-        type="category"   # forza le etichette come categorie
+        tickfont=dict(size=14),  
+        type="category"   
     ),
     yaxis=dict(
         title=dict(
             text="Numero di Incidenti",
-            font=dict(size=18)   # titolo asse Y sinistro più grande
+            font=dict(size=18)   
         ),
-        tickfont=dict(size=14)  # valori più grandi
+        tickfont=dict(size=14)  
     ),
-    yaxis2=dict(  # lato destro (rosso, lasciato invariato)
+    yaxis2=dict(  
         title=dict(
             text="Tasso di Mortalità (%)",
             font=dict(size=18, color="rgba(231, 76, 60, 1)")
@@ -113,8 +113,8 @@ def show():
         side="right",
         showgrid=False,
         tickmode="array",
-        tickvals=[],          # <<< solo inizio e fine
-        ticktext=[]      # etichette mostrate
+        tickvals=[],        
+        ticktext=[]     
     ),
     font=dict(size=18),
     height=650,
@@ -124,7 +124,7 @@ def show():
         y=-0.25,
         xanchor="center",
         x=0.5,
-        font=dict(size=14)   # legenda più grande
+        font=dict(size=14)   #font legenda
     )
 )
 

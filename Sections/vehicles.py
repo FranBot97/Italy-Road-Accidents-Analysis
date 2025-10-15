@@ -13,7 +13,7 @@ def show():
     with col_ctrl_temp1:
         year_options_temp = ["Tutti gli anni"] + [2000 + year for year in sorted(utils.available_years, reverse=True)]
         year_selection_temp = st.selectbox(
-            "📅Seleziona Periodo",
+            "Seleziona periodo",
             options=year_options_temp,
             index=0,
             help="Scegli un anno specifico o tutti gli anni per la media",
@@ -89,7 +89,7 @@ def show():
             title=f"Frequenza incidenti per veicolo - {display_text_temp}"
         )
 
-        # Tooltip più leggibile
+        #non va tooltip
         fig_hm.update_traces(
             customdata=[[f"{row_hover[i]} - {col_hover[j]}" for j in range(len(col_hover))]
                         for i in range(len(row_hover))],
@@ -97,7 +97,6 @@ def show():
                           "<span style='font-size:14px'>Incidenti: %{z}</span><extra></extra>"
         )
 
-        # Aggiungo annotazioni personalizzate con colore dinamico per i numeri
         annotations = []
         threshold = values.max() / 2
         for i, row in enumerate(values):
@@ -115,8 +114,7 @@ def show():
 
         fig_hm.update_layout(annotations=annotations)
 
-        # Tema chiaro + assi più grandi
-        fig_hm = utils.apply_light_theme_to_fig(fig_hm)
+        #fig_hm = utils.apply_light_theme_to_fig(fig_hm)
         fig_hm.update_layout(
             xaxis_title="Tipo Veicolo B",
             yaxis_title="Tipo Veicolo A",
@@ -131,12 +129,12 @@ def show():
         coloraxis_colorbar=dict(
             ticks="outside",
             tickfont=dict(size=12),
-            thickness=15,   # spessore (larghezza)
-            len=1,        # lunghezza relativa (0–1, rispetto all’altezza della figura)
-            y=0.5,          # posizione verticale (0=base, 1=alto)
+            thickness=15,  
+            len=1,       
+            y=0.5,          
             yanchor="middle"
         ),
-            margin=dict(t=50, b=50, l=50, r=80)  # lascia più spazio a destra
+            margin=dict(t=50, b=50, l=50, r=80)  
     )
 
 

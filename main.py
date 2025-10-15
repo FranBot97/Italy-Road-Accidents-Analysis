@@ -16,7 +16,7 @@ import Sections.time as time
 import Sections.vehicles as vehicles
 
 # =========================
-# 🎨 CONFIGURAZIONE PAGINA & STYLING
+# CONFIGURAZIONE PAGINA 
 # =========================
 st.set_page_config(
     page_title="Incidenti Stradali Italia",
@@ -25,7 +25,7 @@ st.set_page_config(
 )
 st.html("<style>[data-testid='stHeaderActionElements'] {display: none;}</style>")
 
-# sfondo e griglie chiare di default
+# style
 pio.templates.default = "plotly_white"
 def local_css(file_name):
     with open(file_name) as f:
@@ -47,7 +47,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # =========================
-# SIDEBAR CON MENU AD ANCHOR
+# SIDEBAR TODO
 # =========================
 st.sidebar.markdown("""
 <div class="sidebar-title">Sezioni</div>
@@ -56,12 +56,13 @@ st.sidebar.markdown("""
   <li><a href="#geografia">Distribuzione Geografica</a></li>
   <li><a href="#analisi-temporale">Giorni e orari</a></li>
   <li><a href="#veicoli">Veicoli</a></li>
+  <li><a href="#conducenti">Profilo conducenti</a></li> 
 </ul>
 """, unsafe_allow_html=True)
 
 
 # =========================
-# SEZIONE 1: GENERALE
+# SEZIONE 1: OVERVIEW GENERALE
 # =========================
 st.markdown("<a id='panoramica'></a>", unsafe_allow_html=True)
 overview.show()
@@ -87,6 +88,11 @@ st.markdown("<div style='height:60px;'></div>", unsafe_allow_html=True)
 st.markdown("<a id='veicoli'></a>", unsafe_allow_html=True)
 vehicles.show()
 st.markdown("<div style='height:60px;'></div>", unsafe_allow_html=True)
+
+# =========================
+# SEZIONE 5: ANALISI SUI CONDUCENTI
+# =========================
+#TODO
 
 # =========================
 # FOOTER
