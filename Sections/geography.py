@@ -47,7 +47,7 @@ def show():
 
         view_mode = st.radio("Visualizza per:", ["Regioni", "Province"])
 
-        normalizza = st.toggle("Normalizza per popolazione", value=True)
+        assoluti = st.toggle("Valori assoluti", value=False)
         
         # Bottone reset per regioni
         # if view_mode == "Regioni" and 'selected_region' in st.session_state:
@@ -88,7 +88,7 @@ def show():
         geojson_data = load_geojson("Geo/limits_IT_provinces.geojson")
         
         # Aggiungo nomi province e dati
-        if normalizza:
+        if not(assoluti):
             data_dict = dict(zip(df_geo['idProvincia'], df_geo['incidenti_per_100k']))
             value_label = "Incidenti ogni 100k ab."
         else:
@@ -133,7 +133,7 @@ def show():
 
         geojson_data = load_geojson("Geo/limits_IT_regions.geojson")
         
-        if normalizza:
+        if not(assoluti):
             data_dict = dict(zip(df_geo['idRegione'], df_geo['incidenti_per_100k']))
             value_label = "Incidenti ogni 100k ab."
         else:
@@ -179,7 +179,7 @@ def show():
     choropleth = folium.Choropleth(
         geo_data=geojson_data,
         data=df_geo,
-        columns=[df_geo.columns[0], 'incidenti_per_100k' if normalizza else 'incidenti'],
+        columns=[df_geo.columns[0], 'incidenti_per_100k' if not(assoluti) else 'incidenti'],
         key_on=f'properties.{location_key}',
         fill_color='Reds',  
         fill_opacity=0.7,
@@ -330,7 +330,7 @@ def show():
                 width=700, 
                 height=750,
                 returned_objects=["last_object_clicked"],
-                key=f"map_{year_selection_geo}_{normalizza}"
+                key=f"map_{year_selection_geo}_{assoluti}"
             )
             
             # Gestione del click - USANDO LE COORDINATE (con cache)
@@ -372,7 +372,7 @@ def show():
                 m, 
                 width=700, 
                 height=750,
-                key=f"map_{year_selection_geo}_{normalizza}"
+                key=f"map_{year_selection_geo}_{assoluti}"
             )
     
     # Grafico province della regione selezionata

@@ -81,10 +81,10 @@ def get_bar_colors(df_day, selected_day):
     """Calcola i colori delle barre"""
     if selected_day:
         return [
-            '#10b981' if giorno == selected_day else '#ef4444' if critical else '#3b82f6'
+            '#10b981' if giorno == selected_day else '#3b82f6'
             for giorno, critical in zip(df_day['giorno'], df_day['is_critical'])
         ]
-    return ['#ef4444' if critical else '#3b82f6' for critical in df_day['is_critical']]
+    return ['#3b82f6' for critical in df_day['is_critical']]
 
 # =========================
 # 🎨 FRAGMENT PER GRAFICI INTERATTIVI

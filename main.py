@@ -14,7 +14,7 @@ import Sections.overview as overview
 import Sections.geography as geography
 import Sections.time as time 
 import Sections.vehicles as vehicles
-
+import Sections.drivers as drivers
 # =========================
 # CONFIGURAZIONE PAGINA 
 # =========================
@@ -92,7 +92,9 @@ st.markdown("<div style='height:60px;'></div>", unsafe_allow_html=True)
 # =========================
 # SEZIONE 5: ANALISI SUI CONDUCENTI
 # =========================
-#TODO
+st.markdown("<a id='conducenti'></a>", unsafe_allow_html=True)
+drivers.show()
+st.markdown("<div style='height:60px;'></div>", unsafe_allow_html=True)
 
 # =========================
 # FOOTER
