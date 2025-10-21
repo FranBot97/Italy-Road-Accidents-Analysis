@@ -153,11 +153,14 @@ def render_charts(df_day, df_hour_all, num_years, is_average_temp, display_text_
             tickfont=dict(size=13)
         ),
         yaxis2=dict(
-            title=f"Numero Morti{' (Media)' if is_average_temp else ''}",
+             title=dict(
+                text=f"Numero Morti{' (Media)' if is_average_temp else ''}",
+                font=dict(color='#dc2626')
+            ),
             overlaying='y',
             side='right',
             showgrid=False,
-            fixedrange=True
+            fixedrange=True,
         ),
         height=650,
         hovermode='x unified',

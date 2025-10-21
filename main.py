@@ -13,7 +13,6 @@ from Utils import utils
 import Sections.overview as overview
 import Sections.geography as geography
 import Sections.time as time 
-import Sections.vehicles as vehicles
 import Sections.drivers as drivers
 # =========================
 # CONFIGURAZIONE PAGINA 

@@ -157,8 +157,8 @@ def show():
         # Colori per aree
         color_map = {
             "Nord": "#3b82f6",           # Blu
-            "Centro": "#22c55e",         # Verde
-            "Sud e isole": "#f97316"     # Arancione
+            "Centro": "#0aa363",         # Verde
+            "Sud e isole": "#ed4b0b"     # Arancione
         }
         colors = [color_map.get(area, "#94a3b8") for area in df_geo['Area']]
         
@@ -187,7 +187,7 @@ def show():
             ),
             annotations=[
                 dict(
-                    text=f'<b style="font-size:24px">🇮🇹</b><br><span style="font-size:18px; color:#475569"><b>{total_geo:,}</b></span><br><span style="font-size:12px; color:#64748b">Incidenti<br>totali</span>',
+                    text=f'<span style="font-size:18px; color:#475569"><b>{total_geo:,}</b></span><br><span style="font-size:12px; color:#64748b">Incidenti<br>totali</span>',
                     x=0.5, y=0.5,
                     font=dict(size=14),
                     showarrow=False

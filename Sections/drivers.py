@@ -104,7 +104,7 @@ def render_pie(df: pd.DataFrame):
     fig.update_layout(
         annotations=[
             dict(
-                text=f'<b style="font-size:28px">👥</b><br><span style="font-size:20px; color:#475569"><b>{total:,}</b></span><br><span style="font-size:14px; color:#64748b">Totale<br>conducenti</span>',
+                text=f'<span style="font-size:20px; color:#475569"><b>{total:,}</b></span><br><span style="font-size:14px; color:#64748b">Totale<br>conducenti</span>',
                 x=0.5, y=0.5, font=dict(size=16), showarrow=False
             )
         ],
@@ -128,9 +128,10 @@ def render_age_bar(df: pd.DataFrame):
     
     view_type = st.radio(
         "Visualizza per:",
-        options=["Solo per età", "Per età e sesso"],
+        options=["Per età e sesso","Solo per età"],
         horizontal=True,
-        key="age_view_toggle"
+        key="age_view_toggle",
+        index=0
     )
     
     # Aggrega 0-17
@@ -163,7 +164,7 @@ def render_age_bar(df: pd.DataFrame):
         fig.update_layout(
             title=dict(text="<b>Distribuzione per età</b>", font=dict(size=18, color="#1e293b"), x=0.5, xanchor='center'),
             xaxis=dict(title="Fascia d'età", tickfont=dict(size=12)),
-            yaxis=dict(title="Numero conducenti", tickformat=',', gridcolor='rgba(0,0,0,0.1)'),
+            yaxis=dict(title="Numero conducenti coinvolti", tickformat=',', gridcolor='rgba(0,0,0,0.1)'),
             showlegend=False,
             height=500,
             margin=dict(t=80, b=60, l=80, r=40),
@@ -211,7 +212,7 @@ def render_age_bar(df: pd.DataFrame):
         fig.update_layout(
             title=dict(text="<b>Distribuzione per età e sesso</b>", font=dict(size=18, color="#1e293b"), x=0.5, xanchor='center'),
             xaxis=dict(title="Fascia d'età", tickfont=dict(size=12)),
-            yaxis=dict(title="Numero conducenti", tickformat=',', gridcolor='rgba(0,0,0,0.1)'),
+            yaxis=dict(title="Numero conducenti coinvolti", tickformat=',', gridcolor='rgba(0,0,0,0.1)'),
             barmode='group',
             legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="center", x=0.5),
             height=500,
@@ -255,7 +256,7 @@ def render_minors_pie(df: pd.DataFrame):
     )])
 
     fig.update_layout(
-        title="Dettaglio minorenni (0–17) per sottoclasse",
+        title="Dettaglio conducenti minorenni coinvolti",
         showlegend=False,
         margin=dict(t=70, b=50, l=50, r=50),
         height=430,
