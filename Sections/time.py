@@ -57,16 +57,21 @@ def process_day_data(df_day, num_years):
 def process_hour_data(df_hour_all, selected_day_id, num_years, is_average):
     """Processa i dati orari - filtrati in memoria"""
     if selected_day_id:
+        # Dati di un singolo giorno
         df_hour = df_hour_all[df_hour_all['day_id'] == selected_day_id].copy()
         df_hour = df_hour.groupby('Ora').agg({
             'numero_incidenti': 'sum',
             'morti_totali': 'sum'
         }).reset_index()
     else:
+        # Media settimanale: somma tutti i giorni e dividi per 7
         df_hour = df_hour_all.groupby('Ora').agg({
             'numero_incidenti': 'sum',
             'morti_totali': 'sum'
         }).reset_index()
+        # Dividi per 7 giorni per ottenere la media
+        df_hour['numero_incidenti'] = df_hour['numero_incidenti'] / 7
+        df_hour['morti_totali'] = df_hour['morti_totali'] / 7
     
     # Riempi ore mancanti
     df_hour = df_hour.set_index('Ora').reindex(range(24), fill_value=0).reset_index()
@@ -77,14 +82,46 @@ def process_hour_data(df_hour_all, selected_day_id, num_years, is_average):
     
     return df_hour
 
+def calculate_max_hours(df_hour_all, num_years, is_average, selected_day_id):
+    """
+    Calcola il massimo per l'asse Y:
+    - Se nessun giorno selezionato: massimo della MEDIA settimanale
+    - Se giorno selezionato: massimo tra tutti i singoli giorni
+    """
+    if selected_day_id:
+        # Massimo tra tutti i singoli giorni
+        max_val = df_hour_all.groupby(['day_id', 'Ora'])['numero_incidenti'].sum().max()
+    else:
+        # Media settimanale: somma per ora diviso 7, poi prendi il massimo
+        max_val = (df_hour_all.groupby('Ora')['numero_incidenti'].sum() / 7).max()
+    
+    if is_average:
+        max_val = max_val / num_years
+    
+    return max_val
+
+def calculate_max_deaths(df_hour_all, num_years, is_average, selected_day_id):
+    """Calcola il massimo dei morti per l'asse Y2"""
+    if selected_day_id:
+        # Massimo tra tutti i singoli giorni
+        max_val = df_hour_all.groupby(['day_id', 'Ora'])['morti_totali'].sum().max()
+    else:
+        # Media settimanale: somma per ora diviso 7, poi prendi il massimo
+        max_val = (df_hour_all.groupby('Ora')['morti_totali'].sum() / 7).max()
+    
+    if is_average:
+        max_val = max_val / num_years
+    
+    return max_val
+
 def get_bar_colors(df_day, selected_day):
     """Calcola i colori delle barre"""
     if selected_day:
         return [
             '#10b981' if giorno == selected_day else '#3b82f6'
-            for giorno, critical in zip(df_day['giorno'], df_day['is_critical'])
+            for giorno in df_day['giorno']
         ]
-    return ['#3b82f6' for critical in df_day['is_critical']]
+    return ['#3b82f6' for _ in df_day['giorno']]
 
 # =========================
 # 🎨 FRAGMENT PER GRAFICI INTERATTIVI
@@ -100,6 +137,10 @@ def render_charts(df_day, df_hour_all, num_years, is_average_temp, display_text_
         selected_day_id = df_day[df_day['giorno'] == st.session_state.selected_day]['day_id'].iloc[0]
     
     df_hour = process_hour_data(df_hour_all, selected_day_id, num_years, is_average_temp)
+    
+    # === CALCOLA MASSIMO PER ASSE Y (dipende dalla selezione) ===
+    max_incidents = calculate_max_hours(df_hour_all, num_years, is_average_temp, selected_day_id)
+    max_deaths = calculate_max_deaths(df_hour_all, num_years, is_average_temp, selected_day_id)
     
     # === GRAFICO GIORNALIERO ===
     fig_day_combo = go.Figure()
@@ -206,23 +247,26 @@ def render_charts(df_day, df_hour_all, num_years, is_average_temp, display_text_
         font=dict(size=14),
         xaxis_title="Ora del giorno",
         yaxis_title=f"Numero incidenti{' (Media)' if is_average_temp else ''}",
+        yaxis=dict(
+            range=[0, max_incidents * 1.15],  # ASSE Y ADATTIVO
+            tickfont=dict(size=13),
+            fixedrange=True
+        ),
         yaxis2=dict(
             title=dict(
                 text=f"Numero Morti{' (Media)' if is_average_temp else ''}",
                 font=dict(color='#dc2626')
             ),
+            range=[0, max_deaths * 1.15],  # ASSE Y2 ADATTIVO
             overlaying='y',
             side='right',
             showgrid=False,
-            tickfont=dict(color='#dc2626')
+            tickfont=dict(color='#dc2626'),
+            fixedrange=True
         ),
         xaxis=dict(
             tickmode="linear",
             dtick=2,
-            tickfont=dict(size=13),
-            fixedrange=True
-        ),
-        yaxis=dict(
             tickfont=dict(size=13),
             fixedrange=True
         ),
