@@ -20,6 +20,21 @@ html, body, .stApp, .main {
     margin: 0.6rem 0;
 }
 
+.metric-card {
+    padding: 0.5rem 0.75rem;      /* meno padding verticale/orizzontale */
+    border-radius: 10px;
+    background: white;            /* o il tuo gradiente, se lo avevi */
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.12);
+}
+.metric-card h2 {
+    font-size: 1.1rem !important; /* titoli più piccoli */
+    margin: 0.2rem 0 !important;
+}
+.metric-card p {
+    font-size: 0.8rem !important; /* sottotitolo più piccolo */
+    margin: 0 !important;
+}
+
 /* Titoli sezione (scuri) */
 .section-header {
     color: #1f2937;

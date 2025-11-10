@@ -5,7 +5,7 @@ import pandas as pd
 
 def show():  
     st.markdown('<div class="section-header">Panoramica</div>', unsafe_allow_html=True)
-    st.markdown('<div class="section-subtitle">Trend degli incidenti e delle vittime nel tempo</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-subtitle">Trend degli incidenti e delle vittime dal 2019 al 2023</div>', unsafe_allow_html=True)
 
     df_yearly_accidents = utils.load_yearly_accident_data_from_db()
     df_yearly_accidents['percentuali_morti'] = (df_yearly_accidents['total_deaths'] / df_yearly_accidents['total_incidents']) * 100
@@ -21,11 +21,12 @@ def show():
 
     with col1:
         total_incidents = df_yearly_accidents['Incidenti'].sum()
+        max_incidents = df_yearly_accidents["Incidenti"].max()
         st.markdown(f"""
             <div class="metric-card">
-                <h3 style="color: #667eea; margin: 0;">🚨 Incidenti Totali</h3>
+                <h2 style="color: #667eea; margin: 0;">🚨 Incidenti Totali</h3>
                 <h2 style="color: #333; margin: 0.5rem 0;">{str(f"{total_incidents:,}").replace(",", ".")}</h2>
-                <p style="color: #666; margin: 0; font-size: 1rem;">2019-2023</p>
+                <p style="color: #666; margin: 0;">2019-2023</p>
             </div>
         """, unsafe_allow_html=True)
 
@@ -33,9 +34,9 @@ def show():
         total_deaths = df_yearly_accidents['Morti'].sum()
         st.markdown(f"""
             <div class="metric-card">
-                <h3 style="color: #e74c3c; margin: 0;">💀 Vittime Totali</h3>
+                <h2 style="color: #e74c3c; margin: 0;">💀 Vittime Totali</h3>
                 <h2 style="color: #333; margin: 0.5rem 0;">{str(f"{total_deaths:,}").replace(",", ".")}</h2>
-                <p style="color: #666; margin: 0; font-size: 1rem;">2019-2023</p>
+                <p style="color: #666; margin: 0;">2019-2023</p>
             </div>
         """, unsafe_allow_html=True)
 
@@ -43,9 +44,9 @@ def show():
         avg_mortality = df_yearly_accidents['Percentuale morti'].mean()
         st.markdown(f"""
             <div class="metric-card">
-                <h3 style="color: #f39c12; margin: 0;">Tasso mortalità medio</h3>
+                <h2  style="color: #f39c12; margin: 0;">Tasso mortalità medio</h3>
                 <h2 style="color: #333; margin: 0.5rem 0;">{avg_mortality:.2f}%</h2>
-                <p style="color: #666; margin: 0; font-size: 1rem;">2019-2023</p>
+                <p style="color: #666; margin: 0;">2019-2023</p>
             </div>
         """, unsafe_allow_html=True)
 
@@ -95,11 +96,12 @@ def show():
             xaxis=dict(
                 title=dict(text="Anno", font=dict(size=16)),
                 tickfont=dict(size=14),  
-                type="category"   
+                type="category",
             ),
             yaxis=dict(
                 title=dict(text="Numero di Incidenti", font=dict(size=16)),
-                tickfont=dict(size=14)  
+                tickfont=dict(size=14),
+                range=[0, max_incidents * 1.1]
             ),
             yaxis2=dict(  
                 title=dict(
@@ -110,9 +112,7 @@ def show():
                 overlaying="y",
                 side="right",
                 showgrid=False,
-                tickmode="array",
-                tickvals=[],        
-                ticktext=[]     
+                range=[0, 2.5]
             ),
             height=600,
             margin=dict(t=80, b=80, l=80, r=80),

@@ -201,6 +201,7 @@ def render_charts(df_day, df_hour_all, num_years, is_average_temp, display_text_
             overlaying='y',
             side='right',
             showgrid=False,
+            tickfont=dict(size=14, color="rgba(231, 76, 60, 1)"),
             fixedrange=True,
         ),
         height=650,
@@ -261,7 +262,7 @@ def render_charts(df_day, df_hour_all, num_years, is_average_temp, display_text_
             overlaying='y',
             side='right',
             showgrid=False,
-            tickfont=dict(color='#dc2626'),
+             tickfont=dict(size=14, color="rgba(231, 76, 60, 1)"),
             fixedrange=True
         ),
         xaxis=dict(
@@ -336,7 +337,7 @@ def show():
     col_ctrl_temp1, col_ctrl_temp2 = st.columns(2)
 
     with col_ctrl_temp1:
-        year_options_temp = ["Tutti gli anni"] + [2000 + year for year in sorted(available_years, reverse=True)]
+        year_options_temp = ["Media di tutti gli anni"] + [2000 + year for year in sorted(available_years, reverse=True)]
         
         year_selection_temp = st.selectbox(
             "Seleziona Periodo",
@@ -359,7 +360,7 @@ def show():
             st.rerun()
 
     # Selezione anno
-    if year_selection_temp == "Tutti gli anni":
+    if year_selection_temp == "Media di tutti gli anni":
         selected_years_temp, is_average_temp, display_text_temp = available_years, True, "media periodo 2019-2023"
     else:
         year_value = year_selection_temp - 2000

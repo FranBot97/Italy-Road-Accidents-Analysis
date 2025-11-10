@@ -83,6 +83,9 @@ def get_geo_data(view_mode: str, years_str: str, num_years: int):
 
 
 def show():
+    if "map_version" not in st.session_state:
+        st.session_state.map_version = 0
+
     st.markdown('<div class="section-header">Distribuzione Geografica</div>', unsafe_allow_html=True)
 
     col_chart, col_filters = st.columns([2, 1])
@@ -91,7 +94,7 @@ def show():
     # FILTRI
     # ==========================
     with col_filters:
-        st.markdown("<br><br>", unsafe_allow_html=True)
+        st.markdown("<br>", unsafe_allow_html=True)
         available_years = utils.available_years
         year_options = ["Media di tutti gli anni"] + [2000 + year for year in sorted(available_years, reverse=True)]
         year_selection_geo = st.selectbox(
@@ -193,12 +196,28 @@ def show():
     # RENDER MAPPA + CLICK
     # ==========================
     with col_chart:
+        map_key = f"map_{year_selection_geo}_{assoluti}_{st.session_state.map_version}"
+
         if view_mode == "Regioni":
-            # Plotly gestisce i click nativamente!
+            st.markdown(
+                """
+                <style>
+                /* Cursore hand sulla mappa (Plotly + Mapbox) */
+                div[data-testid="stPlotlyChart"] .mapboxgl-canvas-container {
+                    cursor: pointer !important;
+                }
+                div[data-testid="stPlotlyChart"] .mapboxgl-canvas {
+                    cursor: pointer !important;
+                }
+                </style>
+                """,
+                unsafe_allow_html=True,
+            )
+      
             map_click = st.plotly_chart(
                 fig_map, 
                 use_container_width=True, 
-                key=f"map_{year_selection_geo}_{assoluti}",
+                key=map_key, #f"map_{year_selection_geo}_{assoluti}",
                 on_select="rerun",
                 selection_mode="points"
             )
@@ -216,71 +235,110 @@ def show():
             st.plotly_chart(
                 fig_map, 
                 use_container_width=True,
-                key=f"map_{year_selection_geo}_{assoluti}"
+                key=map_key #f"map_{year_selection_geo}_{assoluti}"
             )
 
-    # ==========================
+      # ==========================
     # GRAFICO PROVINCE DELLA REGIONE SELEZIONATA
     # ==========================
-    if view_mode == "Regioni" and 'selected_region' in st.session_state:
+    if view_mode == "Regioni":
         with col_filters:
-            st.markdown("<br>", unsafe_allow_html=True)
-            
-            # Reset button
-            if st.button("🔄 Deseleziona regione", use_container_width=True):
-                del st.session_state.selected_region
-                st.rerun()
-            
-            st.markdown("<br>", unsafe_allow_html=True)
+            if 'selected_region' in st.session_state:   
+                # Reset button
+                if st.button("Deseleziona regione", use_container_width=True):
+                    if "selected_region" in st.session_state:
+                        del st.session_state.selected_region
+                    st.session_state.map_version += 1  # forza la ricreazione del widget
+                    st.rerun()
 
-            df_province_region = get_province_data(
-                st.session_state.selected_region,
-                years_str,
-                num_years
-            )
-
-            if not df_province_region.empty:
-                if num_years > 1:
-                    df_province_region['incidenti'] = df_province_region['incidenti'] / num_years
-
-                df_province_region['incidenti_100k'] = (
-                    df_province_region['incidenti'] / df_province_region['popolazione']
-                ) * 100_000
-
-                df_province_region = df_province_region.sort_values('incidenti_100k', ascending=True)
-
-                # Nome regione
-                nome_regione = df_geo[df_geo[id_col] == st.session_state.selected_region][name_col].iloc[0]
-
-                fig = go.Figure()
-                fig.add_trace(go.Bar(
-                    x=df_province_region['incidenti_100k'],
-                    y=df_province_region['provincia'],
-                    orientation='h',
-                    marker=dict(color='#ef4444'),
-                    text=df_province_region['incidenti_100k'].round(1),
-                    textposition='outside',
-                    textfont=dict(size=11),
-                    hovertemplate="<b>%{y}</b><br>" +
-                                 "Inc./100k: %{x:.1f}<br>" +
-                                 "<extra></extra>"
-                ))
-
-                fig.update_layout(
-                    title=dict(
-                        text=f"Province - {nome_regione}",
-                        font=dict(size=14),
-                        x=0,
-                        xanchor='left'
-                    ),
-                    xaxis_title="Incidenti ogni 100k ab.",
-                    yaxis_title="",
-                    height=max(350, len(df_province_region) * 35),
-                    margin=dict(l=0, r=0, t=80, b=40),
-                    showlegend=False,
-                    xaxis=dict(fixedrange=True),
-                    yaxis=dict(fixedrange=True),
-                    dragmode=False
+                df_province_region = get_province_data(
+                    st.session_state.selected_region,
+                    years_str,
+                    num_years
                 )
 
-                st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
+                if not df_province_region.empty:
+                    # media su più anni se necessario (come fai sopra)
+                    if num_years > 1:
+                        df_province_region['incidenti'] = df_province_region['incidenti'] / num_years
+
+                    # calcolo per 100k
+                    df_province_region['incidenti_100k'] = (
+                        df_province_region['incidenti'] / df_province_region['popolazione']
+                    ) * 100_000
+
+                    df_province_region = df_province_region.sort_values('incidenti_100k', ascending=True)
+
+                    # QUI scegli cosa mostrare in base a "assoluti"
+                    if assoluti:
+                        x_col = 'incidenti'
+                        x_label = 'Incidenti assoluti'
+                        text_values = df_province_region['incidenti'].round(0)
+                        hover_template = (
+                            "<b>%{y}</b><br>"
+                            "Incidenti totali: %{x:.0f}<br>"
+                            "<extra></extra>"
+                        )
+                    else:
+                        x_col = 'incidenti_100k'
+                        x_label = 'Incidenti ogni 100k ab.'
+                        text_values = df_province_region['incidenti_100k'].round(1)
+                        hover_template = (
+                            "<b>%{y}</b><br>"
+                            "Inc./100k: %{x:.1f}<br>"
+                            "<extra></extra>"
+                        )
+
+                    # Nome regione
+                    nome_regione = df_geo[df_geo[id_col] == st.session_state.selected_region][name_col].iloc[0]
+
+                    fig = go.Figure()
+                    fig.add_trace(go.Bar(
+                        x=df_province_region[x_col],
+                        y=df_province_region['provincia'],
+                        orientation='h',
+                        marker=dict(color='#ef4444'),
+                        text=text_values,
+                        textposition='outside',
+                        textfont=dict(size=11),
+                        hovertemplate=hover_template
+                    ))
+
+                    max_value = df_province_region[x_col].max()
+
+                    fig.update_layout(
+                        title=dict(
+                            text=f"Province - {nome_regione}",
+                            font=dict(size=14),
+                            x=0,
+                            xanchor='left'
+                        ),
+                        xaxis_title=x_label,
+                        yaxis_title="",
+                        height=max(350, len(df_province_region) * 35),
+                        margin=dict(l=0, r=50, t=80, b=40),
+                        showlegend=False,
+                        xaxis=dict(
+                            range=[0, max_value * 1.15],  # 15% spazio extra
+                            fixedrange=True
+                        ),
+                        yaxis=dict(fixedrange=True),
+                        dragmode=False
+                    )
+
+                    st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
+            else:
+                # Messaggio quando nessuna regione è selezionata
+                st.markdown("""
+                <div style="
+                    padding: 40px 20px;
+                    text-align: center;
+                    color: #6b7280;
+                    font-size: 16px;
+                    border: 2px dashed #d1d5db;
+                    border-radius: 8px;
+                    margin-top: 100px;
+                ">
+                    Seleziona una regione sulla mappa<br>per visualizzare i dettagli delle province
+                </div>
+                """, unsafe_allow_html=True)
