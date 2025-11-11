@@ -3,4 +3,3 @@ pandas
 numpy
 plotly
 matplotlib
-sqlite3-binary
