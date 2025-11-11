@@ -2,3 +2,17 @@
 base="light"
 backgroundColor="#ffffff"
 textColor="#1f2937"
+
+[server]
+
+[ui]
+    # Personalizza le pagine e i loro titoli nella barra laterale:
+    [[ui.pages]]
+    path = "main.py"
+    name = "Dashboard Incidenti Stradali"
+    icon = "house"
+
+    [[ui.pages]]
+    path = "info.py"
+    name = "Info e Metodologia"
+    icon = "info-circle"

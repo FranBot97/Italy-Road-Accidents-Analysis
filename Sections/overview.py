@@ -5,7 +5,7 @@ import pandas as pd
 
 def show():  
     st.markdown('<div class="section-header">Panoramica</div>', unsafe_allow_html=True)
-    st.markdown('<div class="section-subtitle">Trend degli incidenti e delle vittime dal 2019 al 2023</div>', unsafe_allow_html=True)
+    #st.markdown('<div class="section-subtitle">Trend degli incidenti e delle vittime dal 2019 al 2023</div>', unsafe_allow_html=True)
 
     df_yearly_accidents = utils.load_yearly_accident_data_from_db()
     df_yearly_accidents['percentuali_morti'] = (df_yearly_accidents['total_deaths'] / df_yearly_accidents['total_incidents']) * 100
@@ -24,7 +24,7 @@ def show():
         max_incidents = df_yearly_accidents["Incidenti"].max()
         st.markdown(f"""
             <div class="metric-card">
-                <h2 style="color: #667eea; margin: 0;">🚨 Incidenti Totali</h3>
+                <h2 style="color: #333; margin: 0;">🚨 Incidenti Totali</h3>
                 <h2 style="color: #333; margin: 0.5rem 0;">{str(f"{total_incidents:,}").replace(",", ".")}</h2>
                 <p style="color: #666; margin: 0;">2019-2023</p>
             </div>
@@ -34,7 +34,7 @@ def show():
         total_deaths = df_yearly_accidents['Morti'].sum()
         st.markdown(f"""
             <div class="metric-card">
-                <h2 style="color: #e74c3c; margin: 0;">💀 Vittime Totali</h3>
+                <h2 style="color: #333; margin: 0;">💀 Vittime Totali</h3>
                 <h2 style="color: #333; margin: 0.5rem 0;">{str(f"{total_deaths:,}").replace(",", ".")}</h2>
                 <p style="color: #666; margin: 0;">2019-2023</p>
             </div>
@@ -44,7 +44,7 @@ def show():
         avg_mortality = df_yearly_accidents['Percentuale morti'].mean()
         st.markdown(f"""
             <div class="metric-card">
-                <h2  style="color: #f39c12; margin: 0;">Tasso mortalità medio</h3>
+                <h2  style="color: #333; margin: 0;">Tasso mortalità medio</h3>
                 <h2 style="color: #333; margin: 0.5rem 0;">{avg_mortality:.2f}%</h2>
                 <p style="color: #666; margin: 0;">2019-2023</p>
             </div>
@@ -157,8 +157,8 @@ def show():
         # Colori per aree
         color_map = {
             "Nord": "#3b82f6",           # Blu
-            "Centro": "#0aa363",         # Verde
-            "Sud e isole": "#ed4b0b"     # Arancione
+            "Centro": "#a84cc9bd",         # Viola
+            "Sud e isole": "#ee5a1f"     # Arancione
         }
         colors = [color_map.get(area, "#94a3b8") for area in df_geo['Area']]
         

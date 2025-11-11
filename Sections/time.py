@@ -210,6 +210,8 @@ def render_charts(df_day, df_hour_all, num_years, is_average_temp, display_text_
         margin=dict(t=120, b=60, l=60, r=60),
         dragmode=False
     )
+
+    
     
     # === GRAFICO ORARIO ===
     title_suffix = f" - {st.session_state.selected_day}" if st.session_state.selected_day else " - media settimanale"
@@ -355,7 +357,7 @@ def show():
             unsafe_allow_html=True
         )
 
-        if st.button("🔄 Reset Selezione Giorno"):
+        if st.button("Deseleziona giorno"):
             st.session_state.selected_day = None
             st.rerun()
 
