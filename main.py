@@ -54,9 +54,9 @@ def page_dashboard():
 
     st.markdown("""
     <div style="text-align:center; max-width:650px; margin:0 auto 2rem auto;">
-        Questa dashboard interattiva permette di esplorare e analizzare i principali dati sugli incidenti<br>
-        stradali in Italia fra il 2019 e il 2023, con metriche, grafici e filtri personalizzabili.<br>
-        Per informazioni aggiuntive sui dati e metodologie consultare la sezione "Info e metodologie"
+        Questa dashboard interattiva permette di esplorare e analizzare i dati sugli incidenti<br>
+        stradali in Italia fra il 2019 e il 2023 che hanno riportato lesioni a persone.<br>
+        Per maggiori informazioni sui dati e metodologie consultare la sezione <a href="/page_info">Info e metodologie</a>
     </div>
     <div style="height:3px; width:220px; background:linear-gradient(90deg,#3b82f6,#22c55e,#06b6d4); margin:1rem auto; border-radius:2px;"></div>
  

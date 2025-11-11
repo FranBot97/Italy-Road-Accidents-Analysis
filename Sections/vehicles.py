@@ -119,7 +119,7 @@ def show():
 
     # -------- COSTRUZIONE MATRICE --------
     custom_order = [
-        "Automobile", "Moto", "Mezzo pesante", "Trasporto pubblico",
+        "Automobile", "Motoveicolo", "Mezzo pesante", "Trasporto pubblico",
         "Bicicletta", "Monopattino"
     ]
     matrix = df.pivot_table(index="tipoA", columns="tipoB", values="n", fill_value=0)
@@ -128,7 +128,7 @@ def show():
     # -------- MAPPATURA EMOJI VERTICALI --------
     emoji_map = {
         "Automobile": "🚗",
-        "Moto": "🏍️",
+        "Motoveicolo": "🏍️",
         "Mezzo pesante": "🚚",
         "Trasporto pubblico": "🚌",
         "Bicicletta": "🚲",

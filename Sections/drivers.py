@@ -177,26 +177,6 @@ def render_age_bar(df: pd.DataFrame):
     st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False}, key="drivers_age_chart")
 
 
-# Nel main show basta richiamare render_age_bar senza più radio button
-def show():
-    st.markdown('<div class="section-header">Profilo conducenti coinvolti</div>', unsafe_allow_html=True)
-
-    col1, col2 = st.columns(2)
-
-    with col1:
-        df_sesso = load_sesso_conducenti()
-        render_pie(df_sesso)
-
-    with col2:
-        df_eta = load_eta_conducenti()
-        # usa la versione unificata, senza scelta tra età e sesso
-        render_age_bar(df_eta)
-
-    st.markdown("<div style='height:24px;'></div>", unsafe_allow_html=True)
-    render_minors_pie(df_eta)
-
-
-
 @st.fragment
 def render_minors_pie(df: pd.DataFrame):
     """Dettaglio conducenti minorenni coinvolti"""
@@ -217,10 +197,10 @@ def render_minors_pie(df: pd.DataFrame):
 
     # Palette arancione
     colors = [
-        "#E9FFB3",  # giallo-verde lime chiaro
-        "#75E6A2",  # verde acqua
-        "#FFA534",  # arancione mango
-        "#FF5733",  # arancio rosso vivace
+        "#F155CF",  
+        "#F4C84F",  
+        "#2DCAC8",  
+        "#FF5733",  
     ]
 
 
@@ -258,6 +238,12 @@ def render_minors_pie(df: pd.DataFrame):
 def show():
     """Entry point usato da main.py -> drivers.show()"""
     st.markdown('<div class="section-header">Profilo conducenti coinvolti</div>', unsafe_allow_html=True)
+    st.markdown(
+        "<div class='section-subtitle'>"
+        "Totale dal 2019 al 2023"
+        "</div>",
+        unsafe_allow_html=True
+    )
 
     # Layout a 2 colonne
     col1, col2 = st.columns(2)
