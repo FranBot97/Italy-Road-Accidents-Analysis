@@ -90,23 +90,30 @@ def show():
 
     # -------- QUERY --------
     query = f"""
-        SELECT va.gruppo AS tipoA, vb.gruppo AS tipoB, COUNT(*) AS n
-        FROM incidenti i
-        JOIN tipo_veicolo va ON i.idTipoVeicoloA = va.id
-        JOIN tipo_veicolo vb ON i.idTipoVeicoloB = vb.id
-        WHERE i.anno IN ({years_str})
-          AND i.idTipoVeicoloA IS NOT NULL
-          AND i.idTipoVeicoloB IS NOT NULL
-        GROUP BY va.gruppo, vb.gruppo
-        UNION ALL
-        SELECT vb.gruppo AS tipoA, va.gruppo AS tipoB, COUNT(*) AS n
-        FROM incidenti i
-        JOIN tipo_veicolo va ON i.idTipoVeicoloA = va.id
-        JOIN tipo_veicolo vb ON i.idTipoVeicoloB = vb.id
-        WHERE i.anno IN ({years_str})
-          AND i.idTipoVeicoloA IS NOT NULL
-          AND i.idTipoVeicoloB IS NOT NULL
-        GROUP BY vb.gruppo, va.gruppo;
+    SELECT tipoA, tipoB, SUM(n) AS n
+    FROM (
+    SELECT va.gruppo AS tipoA, vb.gruppo AS tipoB, COUNT(*) AS n
+    FROM incidenti i
+    JOIN tipo_veicolo va ON i.idTipoVeicoloA = va.id
+    JOIN tipo_veicolo vb ON i.idTipoVeicoloB = vb.id
+    WHERE i.anno IN ({years_str})
+      AND i.idTipoVeicoloA IS NOT NULL
+      AND i.idTipoVeicoloB IS NOT NULL
+    GROUP BY va.gruppo, vb.gruppo
+
+    UNION ALL
+
+    SELECT vb.gruppo AS tipoA, va.gruppo AS tipoB, COUNT(*) AS n
+    FROM incidenti i
+    JOIN tipo_veicolo va ON i.idTipoVeicoloA = va.id
+    JOIN tipo_veicolo vb ON i.idTipoVeicoloB = vb.id
+    WHERE i.anno IN ({years_str})
+      AND i.idTipoVeicoloA IS NOT NULL
+      AND i.idTipoVeicoloB IS NOT NULL
+    GROUP BY vb.gruppo, va.gruppo
+    ) t
+    GROUP BY tipoA, tipoB
+    ORDER BY tipoA, tipoB;
     """
     df = utils.run_query(query)
 
@@ -122,7 +129,15 @@ def show():
         "Automobile", "Motoveicolo", "Mezzo pesante", "Trasporto pubblico",
         "Bicicletta", "Monopattino"
     ]
-    matrix = df.pivot_table(index="tipoA", columns="tipoB", values="n", fill_value=0)
+
+    matrix = df.pivot_table(
+    index="tipoA",
+    columns="tipoB",
+    values="n",
+    aggfunc="sum",     
+    fill_value=0
+)
+
     matrix = matrix.reindex(index=custom_order, columns=custom_order)
 
     # -------- MAPPATURA EMOJI VERTICALI --------

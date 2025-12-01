@@ -48,7 +48,7 @@ def page_dashboard():
     # ---------- HEADER ----------
     st.markdown("""
     <div style="text-align:center; padding: 1.8rem 0;">
-      <h1 style="color:#1f2937; font-size:3rem; margin:0;">Dashboard Incidenti Stradali</h1>
+      <h1 style="color:#1f2937; font-size:3rem; margin:0;">Analisi Incidenti Stradali in Italia</h1>
    </div>
     """, unsafe_allow_html=True)
 
