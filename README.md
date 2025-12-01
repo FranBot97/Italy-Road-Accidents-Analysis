@@ -1,3 +1,3 @@
 
-Eseguire
-python -m streamlit run main.py
+Available at https://dashboard-incidenti-italia.streamlit.app/
+
