@@ -5,7 +5,7 @@ import sqlite3
 import plotly.graph_objects as go
 
 # =========================
-# 🚀 FUNZIONI OTTIMIZZATE CON CACHE
+# CACHE PER VELOCIZZARE
 # =========================
 
 @st.cache_data(ttl=3600)
@@ -13,7 +13,7 @@ def load_all_temporal_data(years_str):
     """Carica tutti i dati temporali in una volta sola - CACHED"""
     conn = sqlite3.connect("dbAccidents.db")
     
-    # Query giornaliera
+    # Query numero incidenti giorno settimana
     query_day = f"""
     SELECT g.giorno, g.id as day_id, COUNT(*) AS numero_incidenti,
             SUM(i.Morti) as morti_totali
@@ -25,7 +25,7 @@ def load_all_temporal_data(years_str):
     """
     df_day = pd.read_sql_query(query_day, conn)
     
-    # Query oraria CON giorno (tutti i dati insieme)
+    # Query per dettaglio del giorno
     query_hour_all = f"""
     SELECT g.id as day_id, i.Ora, COUNT(*) AS numero_incidenti,
             SUM(i.Morti) as morti_totali
@@ -55,7 +55,7 @@ def process_day_data(df_day, num_years):
     return df_day
 
 def process_hour_data(df_hour_all, selected_day_id, num_years, is_average):
-    """Processa i dati orari - filtrati in memoria"""
+    """Processa i dati orari filtrati in memoria"""
     if selected_day_id:
         # Dati di un singolo giorno
         df_hour = df_hour_all[df_hour_all['day_id'] == selected_day_id].copy()
@@ -124,13 +124,12 @@ def get_bar_colors(df_day, selected_day):
     return ['#3b82f6' for _ in df_day['giorno']]
 
 # =========================
-# 🎨 FRAGMENT PER GRAFICI INTERATTIVI
+# GRAFICI INTERATTIVI CON FRAGMENT
 # =========================
 
 @st.fragment
 def render_charts(df_day, df_hour_all, num_years, is_average_temp, display_text_temp):
-    """Fragment che gestisce solo i grafici - si aggiorna velocemente"""
-    
+       
     # === PROCESSA DATI ORARI ===
     selected_day_id = None
     if st.session_state.selected_day:
@@ -251,7 +250,7 @@ def render_charts(df_day, df_hour_all, num_years, is_average_temp, display_text_
         xaxis_title="Ora del giorno",
         yaxis_title=f"Numero incidenti{' (Media)' if is_average_temp else ''}",
         yaxis=dict(
-            range=[0, max_incidents * 1.15],  # ASSE Y ADATTIVO
+            range=[0, max_incidents * 1.15],  
             tickfont=dict(size=13),
             fixedrange=True
         ),
@@ -260,7 +259,7 @@ def render_charts(df_day, df_hour_all, num_years, is_average_temp, display_text_
                 text=f"Numero Morti{' (Media)' if is_average_temp else ''}",
                 font=dict(color='#dc2626')
             ),
-            range=[0, max_deaths * 1.15],  # ASSE Y2 ADATTIVO
+            range=[0, max_deaths * 1.15], 
             overlaying='y',
             side='right',
             showgrid=False,
@@ -311,7 +310,7 @@ def render_charts(df_day, df_hour_all, num_years, is_average_temp, display_text_
         )
 
 # =========================
-# 🎨 MAIN FUNCTION
+# MAIN FUNCTION
 # =========================
 
 def show():

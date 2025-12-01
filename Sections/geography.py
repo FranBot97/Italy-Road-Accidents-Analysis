@@ -139,7 +139,7 @@ def show():
         color_col = 'incidenti_per_100k'
         hover_label = 'Incidenti/100k ab.'
 
-    # Prepara customdata per avere entrambi i valori nel tooltip
+    # Tooltip assoluti e relativi
     df_geo['hover_incidenti'] = df_geo['incidenti'].round(1)
     df_geo['hover_incidenti_100k'] = df_geo['incidenti_per_100k'].round(1)
 
@@ -238,7 +238,7 @@ def show():
                 key=map_key #f"map_{year_selection_geo}_{assoluti}"
             )
 
-      # ==========================
+    # ==========================
     # GRAFICO PROVINCE DELLA REGIONE SELEZIONATA
     # ==========================
     if view_mode == "Regioni":
@@ -248,7 +248,7 @@ def show():
                 if st.button("Deseleziona regione", use_container_width=True):
                     if "selected_region" in st.session_state:
                         del st.session_state.selected_region
-                    st.session_state.map_version += 1  # forza la ricreazione del widget
+                    st.session_state.map_version += 1  
                     st.rerun()
 
                 df_province_region = get_province_data(
@@ -258,7 +258,7 @@ def show():
                 )
 
                 if not df_province_region.empty:
-                    # media su più anni se necessario (come fai sopra)
+                    # media su più anni 
                     if num_years > 1:
                         df_province_region['incidenti'] = df_province_region['incidenti'] / num_years
 
@@ -269,7 +269,6 @@ def show():
 
                     df_province_region = df_province_region.sort_values('incidenti_100k', ascending=True)
 
-                    # QUI scegli cosa mostrare in base a "assoluti"
                     if assoluti:
                         x_col = 'incidenti'
                         x_label = 'Incidenti assoluti'

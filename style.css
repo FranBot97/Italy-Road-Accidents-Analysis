@@ -152,9 +152,9 @@ div[data-testid="stToggle"] > div > div > div > label,
 }
 
 .sidebar-links a:hover {
-    background: #f0f9ff;            /* azzurro molto chiaro */
-    border: 1px solid #38bdf8;      /* bordo azzurro */
-    color: #0ea5e9;                 /* testo azzurro */
+    background: #f0f9ff;            
+    border: 1px solid #38bdf8;     
+    color: #0ea5e9;              
     cursor: pointer;
 }
 

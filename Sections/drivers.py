@@ -6,7 +6,7 @@ from Utils import utils
 
 
 # =========================
-# CACHE: CARICAMENTO DATI
+# CACHE
 # =========================
 
 @st.cache_data(ttl=3600)
@@ -71,7 +71,7 @@ def load_eta_conducenti():
 
 
 # =========================
-# FRAGMENT: RENDER GRAFICI
+# FRAGMENT PER GRAFICI
 # =========================
 
 @st.fragment
@@ -195,7 +195,7 @@ def render_minors_pie(df: pd.DataFrame):
     df_min["Eta"] = pd.Categorical(df_min["Eta"], categories=classi_minori, ordered=True)
     df_min = df_min.sort_values("Eta").reset_index(drop=True)
 
-    # Palette arancione
+    # Palette kids
     colors = [
         "#F155CF",  
         "#F4C84F",  
@@ -256,6 +256,6 @@ def show():
         df_eta = load_eta_conducenti()
         render_age_bar(df_eta)
 
-    # --- NUOVO BLOCCO SOTTO: dettaglio minorenni 0–17 ---
+    # --- dettaglio minorenni 0–17 ---
     st.markdown("<div style='height:24px;'></div>", unsafe_allow_html=True)
     render_minors_pie(df_eta)

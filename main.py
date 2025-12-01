@@ -125,7 +125,6 @@ def page_info():
         st.title("Info e metodologie")
         ...
     """
-    # import locale per evitare problemi di packaging
     import pages.info as info
     info.show()
 

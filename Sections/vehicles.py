@@ -140,7 +140,7 @@ def show():
 
     matrix = matrix.reindex(index=custom_order, columns=custom_order)
 
-    # -------- MAPPATURA EMOJI VERTICALI --------
+    # -------- ICONE --------
     emoji_map = {
         "Automobile": "🚗",
         "Motoveicolo": "🏍️",
@@ -159,12 +159,12 @@ def show():
 
     # -------- COLORI HEATMAP --------
     colorscale = [
-        [0.0, "#fff5f5"],   # rosa chiarissimo
-        [0.11, "#fbb6b6"],  # rosa chiaro
-        [0.33, "#f87171"],  # rosso medio chiaro
-        [0.53, "#ef4444"],  # rosso vivo
-        [0.8, "#b91c1c"],   # rosso scuro
-        [1.0, "#7f1d1d"]    # rosso molto scuro
+        [0.0, "#fff5f5"],   
+        [0.11, "#fbb6b6"], 
+        [0.33, "#f87171"],  
+        [0.53, "#ef4444"], 
+        [0.8, "#b91c1c"],  
+        [1.0, "#7f1d1d"]   
     ]
 
     z_vals = matrix_display.values
@@ -172,7 +172,7 @@ def show():
     z_min = float(np.min(z_vals)) if np.size(z_vals) > 0 else 0
     mid_val = (z_max + z_min) / 2 if z_max > 0 else 0
 
-    # -------- FIGURE --------
+    # -------- icone --------
     fig = go.Figure()
     fig.add_trace(
         go.Heatmap(
@@ -233,7 +233,7 @@ def show():
         autorange="reversed"
     )
 
-    # Layout generale: altezza aumentata per celle maggiori
+    # Layout generale
     fig.update_layout(
         height=500,
         title=dict(

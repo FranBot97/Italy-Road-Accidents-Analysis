@@ -149,16 +149,16 @@ def show():
         df_geo['Area'] = df_geo['Area'].str.strip()
         df_geo['Area'] = df_geo['Area'].replace('Sud', 'Sud e isole')
         
-        # Ordine desiderato - usa un dizionario per il sort
+        # Ordino
         area_order = {"Nord": 1, "Centro": 2, "Sud e isole": 3}
         df_geo['sort_order'] = df_geo['Area'].map(area_order)
         df_geo = df_geo.sort_values('sort_order').drop(columns='sort_order')
         
-        # Colori per aree
+        # Colori regioni
         color_map = {
-            "Nord": "#3b82f6",           # Blu
-            "Centro": "#a84cc9bd",         # Viola
-            "Sud e isole": "#ee5a1f"     # Arancione
+            "Nord": "#3b82f6",           
+            "Centro": "#a84cc9bd",         
+            "Sud e isole": "#ee5a1f"   
         }
         colors = [color_map.get(area, "#94a3b8") for area in df_geo['Area']]
         
